@@ -51,7 +51,7 @@ const OnboardingSteps = () => {
     (step === 3 && selectedCurrency);
 
   return (
-    <SafeAreaView
+    <View
       style={[styles.safeArea, { backgroundColor: colors.surface }]}
     >
       <Header step={step} totalSteps={totalSteps} onBack={handleBack} />
@@ -89,14 +89,14 @@ const OnboardingSteps = () => {
           style={styles.button}
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default OnboardingSteps;
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, width: '100%' },
+  safeArea: { flex: 1, width: '100%', paddingTop: 48 },
   container: {
     position: 'absolute',
     bottom: SPACING.huge,

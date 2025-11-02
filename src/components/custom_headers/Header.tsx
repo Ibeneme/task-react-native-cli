@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingBottom: SPACING.huge,
+
   },
   backButton: {
     width: 32,
