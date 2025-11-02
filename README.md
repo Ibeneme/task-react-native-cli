@@ -1,97 +1,180 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+```markdown
+# React Native Onboarding Flow
 
-# Getting Started
+A clean, modern, and **theme-aware** onboarding experience built with **React Native**, featuring:
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+- **3-step onboarding** (Goal → Username → Currency)
+- **Light & Dark mode** support with system sync
+- **Reusable UI components** and **consistent design tokens**
+- **TypeScript-ready** structure
+- **Searchable currency modal** with flags
+- **Smooth navigation** with progress indicator
 
-## Step 1: Start Metro
+---
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## Features
 
-```sh
-# Using npm
-npm start
+- [x] Multi-step onboarding (3 steps)
+- [x] Goal selection with visual feedback
+- [x] Username input with character limit (15)
+- [x] Currency picker with **search**, **flags**, and **country names**
+- [x] Theme toggle (Light/Dark) with **system preference sync**
+- [x] Persistent theme using `AsyncStorage`
+- [x] Fully typed with TypeScript-ready interfaces
+- [x] Reusable design system (spacing, radius, colors)
+- [x] Custom `AppText` component with font weight mapping
+- [x] Progress bar in header
+- [x] Back navigation (disabled on first step)
+- [x] Blur backdrop for currency modal
 
-# OR using Yarn
-yarn start
+---
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── app_texts/app_text.tsx
+│   ├── app_buttons/primary_button.tsx
+│   ├── app_icons/
+│   │   ├── checked_icons/
+│   │   ├── arrow_icons/
+│   │   ├── theme_icons/
+│   │   └── search_icons/
+│   └── custom_headers/Header.tsx
+├── templates/auth/
+│   ├── step_a.tsx (Goal Selection)
+│   ├── step_b.tsx (Username)
+│   └── step_c.tsx (Currency)
+├── contexts/
+│   └── ThemeProvider.tsx
+├── constants/
+│   ├── data.ts (GOALS, CURRENCIES)
+│   ├── spacing_and_radius.ts
+│   └── colors.ts
+└── screens/
+    └── OnboardingSteps.tsx
 ```
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## Key Components
 
-### Android
+### `OnboardingSteps`
+- Main screen orchestrating the 3 steps
+- Manages state: `step`, `selectedGoal`, `username`, `selectedCurrency`
+- Conditional rendering of step templates
+- "Continue" / "Finish" button with validation
 
-```sh
-# Using npm
-npm run android
+### `Step1Goal`
+- Displays list of predefined goals
+- Radio-style selection with check icons
 
-# OR using Yarn
-yarn android
+### `Step2Username`
+- `@username` input with live character counter
+- Max 15 characters
+
+### `Step3Currency`
+- Clickable input opens **bottom sheet modal**
+- Searchable `FlatList` of 25+ currencies
+- Flags, names, codes, and country
+- Blur background using `@react-native-community/blur`
+
+### `ThemeProvider`
+- System theme detection (`Appearance`)
+- Persists user preference via `AsyncStorage`
+- Provides `theme`, `colors`, `toggleTheme`
+
+### `Header`
+- Back button (disabled on step 1)
+- Progress dots
+- Theme toggle icon
+
+---
+
+## Design Tokens
+
+### Spacing (`SPACING`)
+```ts
+xs: 4, sm: 8, md: 12, lg: 16, xl: 20, xxl: 24, xxxl: 32, huge: 48
 ```
 
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+### Border Radius (`RADIUS`)
+```ts
+sm: 8, md: 12, lg: 16, xl: 24, full: 48, pill: 999
 ```
 
-Then, and every time you update your native dependencies, run:
+### Colors (Light & Dark)
+- `primary`: `#3A5A3F` (shared)
+- `accent`: `#10B981` / `#34D399`
+- Responsive text, borders, surfaces
 
-```sh
-bundle exec pod install
+---
+
+## Dependencies
+
+```json
+{
+  "dependencies": {
+    "react-native": "*",
+    "react-native-safe-area-context": "*",
+    "@react-native-async-storage/async-storage": "*",
+    "@react-native-community/blur": "*"
+  }
+}
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## Setup & Installation
 
-```sh
-# Using npm
-npm run ios
+1. **Clone the repo**
+   ```bash
 
-# OR using Yarn
-yarn ios
+   ```
+
+2. **Install dependencies**
+   ```bash
+   yarn
+   ```
+
+3. **iOS - Install Pods**
+   ```bash
+   cd ios && pod install && cd ..
+   ```
+
+4. **Run the app**
+   ```bash
+   npx react-native run-android
+   # or
+   npx react-native run-ios
+   ```
+
+---
+
+## Customization
+
+### Add New Goal
+Edit `constants/data.ts`:
+```ts
+export const GOALS = [
+  { id: 'id', label: 'goal' },
+];
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### Add Currency
+```ts
+{ code: 'KES', name: 'Kenyan Shilling', country: 'Kenya', flag: 'Kenya' }
+```
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### Change Fonts
+Update `fontMap` in `AppText.tsx`:
+```ts
+regular: 'ReThinkSans-Regular',
+medium: 'ReThinkSans-Medium',
+bold: 'ReThinkSans-Bold'
+```
 
-## Step 3: Modify your app
+---
 
-Now that you have successfully run the app, let's make changes!
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+```# task-react-native-cli
